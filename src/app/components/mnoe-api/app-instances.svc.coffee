@@ -40,8 +40,8 @@ angular.module 'mnoEnterpriseAngular'
       defer = $q.defer()
       MnoeOrganizations.get().then(
         ->
-          params = if force == true then 'unscoped' else ''
-          _self.appInstancesPromise = MnoeApiSvc.one('organizations', MnoeOrganizations.selectedId).one('/app_instances?data=' + params).get().then(
+          query = if force == true then '?unscoped=true' else ''
+          _self.appInstancesPromise = MnoeApiSvc.one('organizations', MnoeOrganizations.selectedId).one('/app_instances' + query).get().then(
             (response) ->
               response = response.plain()
               # Save the app instances in the local storage
