@@ -428,6 +428,7 @@ ThemeEditorCtrl = ($scope, $window, $log, $timeout,  toastr, themeEditorSvc) ->
     #loadThemeData(themeEditorSvc.parseLessVars(editor.output))
     loadThemeData(angular.fromJson([editor.output]))
     editor.update().then ->
+      debugger
       editor.busy = false
       toastr.info('Theme has been imported')
 
@@ -485,17 +486,33 @@ ThemeEditorCtrl = ($scope, $window, $log, $timeout,  toastr, themeEditorSvc) ->
     )
 
   loadThemeData = (lessVars) ->
+    console.log 'theme'
+    console.log theme
+    console.log 'variables'
+    console.log variables
     data = flattenObject(lessVars)
+    debugger
 
     _.forEach(theme, (value, key) ->
+      console.log 'data[key]'
+      console.log key
+      console.log data[key]
       if data[key]
         theme[key] = data[key]
     )
 
     _.forEach(variables, (vars, section) ->
+      console.log 'section'
+      console.log section
       _.forEach(vars, (value, key) ->
+        console.log 'data[key] variables'
+        console.log key
+        console.log data[key]
         if data[key]
           variables[section][key] = data[key]
+        console.log "variables['Company Section']['@dashboard-cpy-tabs-bg-color']"
+        console.log variables['Company Section']['@dashboard-cpy-tabs-bg-color']
+        variables['Company Section']['@dashboard-cpy-tabs-bg-color'] = 'hahaLOL'
       )
     )
 
