@@ -269,7 +269,7 @@ ThemeEditorCtrl = ($scope, $window, $log, $timeout,  toastr, themeEditorSvc) ->
 
       # Content
       '@impac-widget-content-border-radius':            '0px 0px 5px 5px'
-      '@impac-widget-lines-container-max-height': 			'210px'
+      '@impac-widget-lines-container-max-height':       '210px'
 
       # Hist Mode Choser
       '@impac-widget-hist-text-transform':              'uppercase'
@@ -351,11 +351,13 @@ ThemeEditorCtrl = ($scope, $window, $log, $timeout,  toastr, themeEditorSvc) ->
     return true if editor.updating
     editor.busy = true
     vars = mergeLessVars()
+    console.log 'vars'
+    console.log vars
 
     # Apply style
     less.modifyVars(vars).then ->
       editor.busy = false
-      theme_action = if opts.published
+      theme_action = if opts.publish
         "published style"
       else if opts.default
         "default style"
@@ -426,7 +428,17 @@ ThemeEditorCtrl = ($scope, $window, $log, $timeout,  toastr, themeEditorSvc) ->
   editor.import = ->
     editor.busy = true
     #loadThemeData(themeEditorSvc.parseLessVars(editor.output))
-    loadThemeData(angular.fromJson([editor.output]))
+    debugger
+    console.log 'editor.output'
+    console.log editor.output
+    # loadThemeData(angular.fromJson([editor.output]))
+    try
+      console.log JSON.parse(editor.output)
+      loadThemeData(JSON.parse(editor.output), false)
+    catch err
+      toastr.error('Error! JSON format is incorrect. Please load correct JSON format')
+      return
+
     editor.update().then ->
       debugger
       editor.busy = false
@@ -485,34 +497,40 @@ ThemeEditorCtrl = ($scope, $window, $log, $timeout,  toastr, themeEditorSvc) ->
         $log.info('No custom theme found')
     )
 
-  loadThemeData = (lessVars) ->
+  loadThemeData = (lessVars, initial=true) ->
     console.log 'theme'
     console.log theme
     console.log 'variables'
     console.log variables
-    data = flattenObject(lessVars)
+    # data = flattenObject(lessVars)
+    data = lessVars
+    console.log 'checking BIG data'
+    console.log data
     debugger
 
     _.forEach(theme, (value, key) ->
       console.log 'data[key]'
       console.log key
       console.log data[key]
+      console.log data['branding'][key] unless initial
       if data[key]
-        theme[key] = data[key]
+        theme[key] = if initial then data[key] else data['branding'][key]
+        # theme[key] = data[key]
     )
 
     _.forEach(variables, (vars, section) ->
       console.log 'section'
       console.log section
       _.forEach(vars, (value, key) ->
+        debugger
         console.log 'data[key] variables'
         console.log key
         console.log data[key]
-        if data[key]
-          variables[section][key] = data[key]
-        console.log "variables['Company Section']['@dashboard-cpy-tabs-bg-color']"
-        console.log variables['Company Section']['@dashboard-cpy-tabs-bg-color']
-        variables['Company Section']['@dashboard-cpy-tabs-bg-color'] = 'hahaLOL'
+        console.log data['variables'][section][key] unless initial
+        console.log value
+        if data[key] || (data['variables'] && data['variables'][section] && data['variables'][section][key])
+          # variables[section][key] = data[key]
+          variables[section][key] = if initial then data[key] else data['variables'][section][key]
       )
     )
 

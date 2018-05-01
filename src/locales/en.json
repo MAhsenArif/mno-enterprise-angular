@@ -1048,5 +1048,6 @@
   "mno_enterprise.provision.select_organization.title": "Choose an organization",
   "mno_enterprise.provision.select_organization.explanation": "You belong to multiple organizations",
   "mno_enterprise.provision.select_organization.select": "Please select the organization you are making this new order for",
-  "mno_enterprise.provision.select_organization.submit": "Go"
+  "mno_enterprise.provision.select_organization.submit": "Go",
+  "mno_enterprise.theme_editor.input_field.placeholder": "Please follow the JSON struture standards for importing variables. If you are not sure of JSON format please click Export to get existing configuration JSON"
 }
