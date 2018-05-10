@@ -2,7 +2,7 @@
 #============================================
 #
 #============================================
-DashboardCompanyCartCtrl = ($scope, $state, $stateParams, $uibModal, MnoeCurrentUser, MnoeOrganizations, MnoeProvisioning, MnoeConfig) ->
+DashboardCompanyCartCtrl = ($scope, MnoeProvisioning) ->
   'ngInject'
 
   cartSubscriptions = ->

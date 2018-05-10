@@ -1,9 +1,18 @@
-<h2 class="section-title" translate>{{ vm.subscriptionsTitle() }}</h2>
+<h2 class="section-title" ng-show="vm.cartSubscriptions">
+  {{ 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.title' | translate }}
+</h2>
+<h2 class="section-title" ng-hide="vm.cartSubscriptions" translate>
+  {{ 'mno_enterprise.templates.dashboard.provisioning.subscriptions.title' | translate }}
+</h2>
 
 <div id="provisioning-subscriptions" class="row top-buffer-2">
   <div ng-show="vm.cartSubscriptions" class='text-right bottom-buffer-1'>
-    <button class='btn btn-primary' ng-click="vm.deleteCart()">Delete Cart</button>
-    <button class='btn btn-primary' ng-click="vm.submitCart()">Submit Cart</button>
+    <button class='btn btn-primary' ng-click="vm.deleteCart()">
+      {{ 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.delete_cart' | translate }}
+    </button>
+    <button class='btn btn-primary' ng-click="vm.submitCart()">
+      {{ 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.submit_cart' | translate }}
+    </button>
   </div>
 
   <div class="well pricing-plans">
@@ -118,7 +127,7 @@
             <a ng-click="vm.modifySubscription(subscription, $index)" ng-if="subscription.status !== 'cancelled'" class="btn btn-link btn-link-warning" uib-tooltip="{{ 'mno_enterprise.templates.dashboard.provisioning.subscriptions.modify' | translate }}" tooltip-append-to-body="true">
               <i class="fa fa-pencil-square-o"></i>
             </a>
-            <a ng-click="vm.cancelSubscription(subscription, $index)" ng-if="subscription.status !== 'cancelled'" class="btn btn-link btn-link-danger" uib-tooltip="{{ vm.cartSubscriptions? 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.cancel' : 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cancel' | translate }}" tooltip-append-to-body="true">
+            <a ng-click="vm.cancelSubscription(subscription, $index)" ng-if="subscription.status !== 'cancelled'" class="btn btn-link btn-link-danger" uib-tooltip="{{ vm.cartSubscriptions ? 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.cancel' : 'mno_enterprise.templates.dashboard.provisioning.subscriptions.cancel' | translate }}" tooltip-append-to-body="true">
               <i class="fa fa-remove"></i>
             </a>
           </div>

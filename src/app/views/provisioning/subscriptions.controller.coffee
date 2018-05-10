@@ -44,12 +44,6 @@ angular.module 'mnoEnterpriseAngular'
       else
         $state.go("home.provisioning.order", {id: subscription.id})
 
-    vm.subscriptionsTitle = ->
-      if vm.cartSubscriptions
-        'mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.title'
-      else
-        'mno_enterprise.templates.dashboard.provisioning.subscriptions.title'
-
     vm.subscriptionsPromise = ->
       if vm.cartSubscriptions
         params = { where: {staged_subscriptions: true } }

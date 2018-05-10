@@ -712,6 +712,8 @@
   "mno_enterprise.templates.dashboard.provisioning.subscription.events": "Provisioning events",
   "mno_enterprise.templates.dashboard.provisioning.subscription.provisioning_data_root_name": "Provisioning Data",
   "mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.title": "Your Company Cart",
+  "mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.submit_cart": "Submit Cart",
+  "mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.delete_cart": "Delete Cart",
   "mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.empty": "Please add some items to the cart",
   "mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.delete_cart": "Your cart has been cleared",
   "mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.submit_cart": "Orders requested",
