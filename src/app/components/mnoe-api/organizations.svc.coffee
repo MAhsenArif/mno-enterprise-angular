@@ -51,7 +51,7 @@ angular.module 'mnoEnterpriseAngular'
           MnoeApiSvc.one('/organizations', _self.selectedId).get().then(
             (responseOrga) ->
               # Use user id to avoid another user to load with an unknown organisation
-              $cookies.put("#{response.id}_dhb_ref_id", responseOrga.organization.id)
+              $cookies.put("#{response.id}_dhb_ref_id", responseOrga.organization.id, { path: '/' })
 
               # Save the organization in the service
               _self.selected = responseOrga.plain()
