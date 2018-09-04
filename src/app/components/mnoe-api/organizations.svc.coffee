@@ -29,7 +29,7 @@ angular.module 'mnoEnterpriseAngular'
 
     @reloadCurrentOrganization = () ->
       orgId = _self.selectedId
-      $cookies.remove("#{orgId}_dhb_ref_id")
+      $cookies.remove("#{MnoeCurrentUser.user.id}_dhb_ref_id")
       organizationPromise = null
       _self.selectedId = null
       MnoeCurrentUser.refresh().then(
