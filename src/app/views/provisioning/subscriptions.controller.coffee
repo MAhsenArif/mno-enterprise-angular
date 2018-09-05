@@ -5,6 +5,7 @@ angular.module 'mnoEnterpriseAngular'
       vm = this
       vm.isLoading = true
       vm.isCartSubmitting = false
+      vm.isCartDeleting = false
       vm.cartSubscriptions = $stateParams.subType == 'cart'
       vm.skipPriceSelection = ProvisioningHelper.skipPriceSelection
 
@@ -20,15 +21,18 @@ angular.module 'mnoEnterpriseAngular'
           MnoeProvisioning.getSubscriptions(params)
 
       vm.deleteCart = ->
+        return if vm.isCartSubmitting || vm.isCartDeleting
+        vm.isCartDeleting = true
         MnoeProvisioning.deleteCartSubscriptions().then(
           (response) ->
             MnoeProvisioning.emptyCartSubscriptions()
             toastr.info('mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.delete_cart.toastr')
+            vm.isCartDeleting = false
             $state.go("home.marketplace")
         )
 
       vm.submitCart = ->
-        return if vm.isCartSubmitting
+        return if vm.isCartSubmitting || vm.isCartDeleting
         vm.isCartSubmitting = true
         MnoeProvisioning.submitCartSubscriptions().then(
           (response) ->
