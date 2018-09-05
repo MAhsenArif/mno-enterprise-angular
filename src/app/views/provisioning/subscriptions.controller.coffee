@@ -3,6 +3,7 @@ angular.module 'mnoEnterpriseAngular'
 
     vm = this
     vm.isLoading = true
+    vm.isCartSubmitting = false
     vm.cartSubscriptions = $stateParams.subType == 'cart'
     vm.skipPriceSelection = ProvisioningHelper.skipPriceSelection
 
@@ -26,12 +27,15 @@ angular.module 'mnoEnterpriseAngular'
       )
 
     vm.submitCart = ->
+      return if vm.isCartSubmitting
+      vm.isCartSubmitting = true
       MnoeProvisioning.submitCartSubscriptions().then(
         (response) ->
           # Reload dock apps
           MnoeProvisioning.refreshCartSubscriptions()
 
           toastr.success('mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.submit_cart.toastr')
+          vm.isCartSubmitting = false
           $state.go("home.subscriptions", {subType: 'active'})
       )
 
