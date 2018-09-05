@@ -182,21 +182,18 @@ angular.module 'mnoEnterpriseAngular'
         # Retrieve the apps and the app instances in order to retrieve the current app, and its conflicting status
         # with the current installed app instances
         productPromise = if MnoeConfig.isProvisioningEnabled() then MnoeMarketplace.getProducts() else $q.resolve()
-        cartSubPromise = MnoeProvisioning.getSubscriptions({where: {subscription_status_in: 'staged'}}, true)
 
         $q.all(
           marketplace: MnoeMarketplace.getApps(),
           appInstances: MnoeAppInstances.getAppInstances(),
           currentUser: MnoeCurrentUser.get(),
-          products: productPromise,
-          cartSubscriptions: cartSubPromise
+          products: productPromise
         ).then(
           (response) ->
             apps = response.marketplace.apps
             appInstances = response.appInstances
             currentUser = response.currentUser
             products = response.products?.products
-            cartSubscriptions = response.cartSubscriptions
             currency = MnoeOrganizations.selected.organization.billing_currency || MnoeConfig.marketplaceCurrency()
             plans = vm.app.pricing_plans
 
@@ -207,12 +204,6 @@ angular.module 'mnoEnterpriseAngular'
 
             organization = MnoeOrganizations.selected.organization
             vm.canProvisionApp = _.find(authorizedOrganizations, (org) -> org.id == organization.id)
-
-            # Check that the app/product is not already added to cart. If so,
-            # then prevent flow if the app/product is not multi instantiable
-            cartProducts = _.map(cartSubscriptions, (sub) -> sub?.product?.nid)
-            isCartProduct = vm.app.nid in cartProducts
-            vm.allowCartProductProvision = vm.app.multi_instantiable if isCartProduct
 
             # Find if the user already have an instance of it
             vm.appInstance = _.find(appInstances, {app_nid: vm.app.nid})
@@ -246,6 +237,18 @@ angular.module 'mnoEnterpriseAngular'
 
             vm.orderPossible = !_.isEmpty(availablePlans) || (plans.default?[0] && currencySelection) || ProvisioningHelper.skipPriceSelection(product)
 
+            # For Admins, check that the app/product is not already added to cart.
+            # If so, then prevent flow if the app/product is not multi instantiable
+            if vm.canProvisionApp
+              params = {where: {subscription_status_in: 'staged'}}
+              MnoeProvisioning.getSubscriptions(params, true).then(
+                (resp) ->
+                  cartProducts = _.map(resp, (sub) -> sub?.product?.nid)
+                  isCartProduct = vm.app.nid in cartProducts
+                  vm.allowCartProductProvision = vm.app.multi_instantiable if isCartProduct
+              )
+        ).finally(
+          ->
             vm.buttonText = vm.updateButtonText()
             vm.buttonDisabledTooltip = vm.updateButtonDisabledTooltip()
         )
