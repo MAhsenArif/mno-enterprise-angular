@@ -86,9 +86,6 @@ angular.module 'mnoEnterpriseAngular'
         else
           vm.appInstallationBtnText()
 
-      #====================================
-      # UI Click Events
-      #====================================
       vm.buttonClick = () ->
         if !vm.buttonDisabled()
           if vm.isExternallyProvisioned
@@ -211,13 +208,11 @@ angular.module 'mnoEnterpriseAngular'
             organization = MnoeOrganizations.selected.organization
             vm.canProvisionApp = _.find(authorizedOrganizations, (org) -> org.id == organization.id)
 
-            # Check that the app is not already added to cart. If so,
-            # then prevent flow if the product is not multi instantiable
+            # Check that the app/product is not already added to cart. If so,
+            # then prevent flow if the app/product is not multi instantiable
             cartProducts = _.map(cartSubscriptions, (sub) -> sub?.product?.nid)
             isCartProduct = vm.app.nid in cartProducts
             vm.allowCartProductProvision = vm.app.multi_instantiable if isCartProduct
-            console.log 'vm.allowCartProductProvision'
-            console.log vm.allowCartProductProvision
 
             # Find if the user already have an instance of it
             vm.appInstance = _.find(appInstances, {app_nid: vm.app.nid})
