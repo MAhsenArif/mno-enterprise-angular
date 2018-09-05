@@ -1,5 +1,5 @@
 angular.module 'mnoEnterpriseAngular'
-  .controller('ProvisioningSubscriptionsCtrl', ($q, $scope, $state, $stateParams, toastr, MnoeOrganizations, MnoeProvisioning, MnoeConfig, MnoConfirm, PRICING_TYPES, ProvisioningHelper) ->
+  .controller('ProvisioningSubscriptionsCtrl', ($q, $scope, $state, $stateParams, toastr, MnoeOrganizations, MnoeProvisioning, MnoeConfig, MnoConfirm, PRICING_TYPES, ProvisioningHelper, MnoeAppInstances, MnoeProductInstances) ->
 
     vm = this
     vm.isLoading = true
@@ -33,6 +33,9 @@ angular.module 'mnoEnterpriseAngular'
         (response) ->
           # Reload dock apps
           MnoeProvisioning.refreshCartSubscriptions()
+          MnoeAppInstances.emptyAppInstances()
+          MnoeProductInstances.emptyProductInstances()
+          MnoeProductInstances.clearCache()
 
           toastr.success('mno_enterprise.templates.dashboard.provisioning.subscriptions.cart.submit_cart.toastr')
           vm.isCartSubmitting = false
